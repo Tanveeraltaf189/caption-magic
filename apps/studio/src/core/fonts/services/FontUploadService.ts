@@ -1,7 +1,7 @@
 export interface CustomFont {
   id: string;
   name: string;
-  family: string | undefined;
+  family: string;
   mimeType: string;
   uploadedAt: number;
 }
@@ -15,12 +15,13 @@ export class FontUploadService {
     }
 
     try {
+      const nameNoExt = file.name.split('.')[0] || 'font';
       const fontId = `font-${Date.now()}`;
       const customFont: CustomFont = {
         id: fontId,
-        name: file.name.split('.')[0],
-        family: file.name.split('.')[0],
-        mimeType: file.type,
+        name: nameNoExt,
+        family: nameNoExt,
+        mimeType: file.type || 'font/ttf',
         uploadedAt: Date.now(),
       };
 
