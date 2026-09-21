@@ -34,15 +34,27 @@ jobs:
         java-version: '21'
     
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+      run: |
+        mkdir -p $HOME/.android/sdk
+        cd $HOME/.android/sdk
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477014_latest.zip
+        unzip -q commandlinetools-linux-9477014_latest.zip
+        rm commandlinetools-linux-9477014_latest.zip
+    
+    - name: Accept Android licenses
+      run: |
+        export ANDROID_HOME=$HOME/.android/sdk
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
     
     - name: Build APK
       run: |
+        export ANDROID_HOME=$HOME/.android/sdk
         cd apps/studio/android
         chmod +x gradlew
         ./gradlew assembleDebug
     
     - name: Upload APK
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: caption-magic-apk
