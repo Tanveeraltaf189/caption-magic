@@ -1,7 +1,7 @@
 export interface CustomFont {
   id: string;
   name: string;
-  family: string;
+  family: string | undefined;
   mimeType: string;
   uploadedAt: number;
 }

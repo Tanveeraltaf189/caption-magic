@@ -19,8 +19,8 @@ export interface TranscriptionResult {
 }
 
 export class MultiLanguageCaptionService {
-  private groqApiKey?: string;
-  private geminiApiKey?: string;
+  private groqApiKey: string | undefined;
+  private geminiApiKey: string | undefined;
 
   constructor(groqKey?: string, geminiKey?: string) {
     this.groqApiKey = groqKey;
