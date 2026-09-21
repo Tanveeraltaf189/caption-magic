@@ -1,0 +1,23 @@
+{
+  "name": "tscaps",
+  "version": "0.0.0",
+  "private": true,
+  "description": "tscaps — burn subtitles into your videos in the browser.",
+  "homepage": "https://tscaps.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francozanardi/tscaps.git"
+  },
+  "license": "SEE LICENSE IN README.md",
+  "scripts": {
+    "build": "pnpm --filter ./packages/engine build && pnpm --filter ./apps/studio build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "templates:build": "pnpm --filter ./apps/studio templates:build",
+    "templates:contract": "pnpm --filter ./apps/studio templates:contract",
+    "postinstall": "pnpm templates:build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

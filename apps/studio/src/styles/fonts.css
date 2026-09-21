@@ -1,0 +1,103 @@
+/* Subtitle font catalog. Each `@import` registers the family's `@font-face`
+   declarations with the document; templates reference them via
+   `font-family: var(--tscaps-font-family, ...)`.
+
+   Variable packages cover the full weight (and where available, italic) axis
+   in one entry. Static packages only ship the weights we actually use — for
+   single-weight display/script families that means just 400, since their
+   bold toggle either falls back to the same file (no visible change) or the
+   browser synthesizes bold. For Poppins/Roboto we ship 400 and 700 so the
+   bold toggle picks a real heavier face instead of synthesizing.
+
+   Manual `@font-face` blocks at the bottom for families not available on
+   Fontsource. */
+
+/* Variable fonts (full wght axis, italic where applicable) */
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/montserrat';
+@import '@fontsource-variable/nunito';
+@import '@fontsource-variable/raleway';
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource-variable/comfortaa';
+@import '@fontsource-variable/gabarito';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/oswald';
+@import '@fontsource-variable/eb-garamond';
+/* Same reasoning as Fraunces below: the package's default entry ships the
+   roman only, and a synthesized oblique over an old-style serif slants the
+   roman letterforms instead of drawing the cursive ones the design has. */
+@import '@fontsource-variable/eb-garamond/wght-italic.css';
+@import '@fontsource-variable/fraunces';
+/* Fraunces' true italic is a distinct calligraphic design; without this
+   face, `font-style: italic` synthesizes an oblique that reads cheap on
+   a high-contrast serif. */
+@import '@fontsource-variable/fraunces/opsz-italic.css';
+@import '@fontsource-variable/lora';
+@import '@fontsource-variable/playfair-display';
+@import '@fontsource-variable/caveat';
+@import '@fontsource-variable/dancing-script';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* Static, multi-weight (regular + bold for the bold toggle) */
+@import '@fontsource/kalam/400.css';
+@import '@fontsource/kalam/700.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/700.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/700.css';
+
+/* Static, single-weight display / script families
+   (bold toggle relies on browser synthesis or is a no-op for these) */
+@import '@fontsource/anton/400.css';
+@import '@fontsource/bebas-neue/400.css';
+@import '@fontsource/bungee/400.css';
+@import '@fontsource/righteous/400.css';
+@import '@fontsource/bangers/400.css';
+@import '@fontsource/dm-serif-display/400.css';
+@import '@fontsource/im-fell-english/400.css';
+@import '@fontsource/pacifico/400.css';
+@import '@fontsource/lobster/400.css';
+@import '@fontsource/permanent-marker/400.css';
+@import '@fontsource/vt323/400.css';
+@import '@fontsource/press-start-2p/400.css';
+
+/* Arabic, Hebrew and Urdu. Every Latin family names one of these as its
+   stand-in (see `FontCatalog`), so a caption in those scripts lands on a face
+   that carries the template's voice instead of on the device's own. Each
+   `@font-face` carries a `unicode-range`, so none of these download for a
+   reader whose captions never use the script. */
+@import '@fontsource-variable/vazirmatn';
+@import '@fontsource-variable/cairo';
+@import '@fontsource-variable/noto-sans-arabic';
+@import '@fontsource-variable/noto-kufi-arabic';
+@import '@fontsource/tajawal/400.css';
+@import '@fontsource/tajawal/700.css';
+@import '@fontsource/lalezar/400.css';
+@import '@fontsource/amiri/400.css';
+@import '@fontsource/amiri/700.css';
+@import '@fontsource-variable/heebo';
+@import '@fontsource-variable/assistant';
+@import '@fontsource-variable/rubik';
+@import '@fontsource/noto-nastaliq-urdu/400.css';
+
+/* Bengali, Telugu, Tamil and Thai. Import only the weight axis for these
+   script-specific variable families; the width-axis entry points would add
+   files the editor never requests. */
+@import '@fontsource-variable/noto-sans-bengali/wght.css';
+@import '@fontsource-variable/noto-serif-bengali/wght.css';
+@import '@fontsource-variable/noto-sans-telugu/wght.css';
+@import '@fontsource-variable/noto-serif-telugu/wght.css';
+@import '@fontsource-variable/noto-sans-tamil/wght.css';
+@import '@fontsource-variable/noto-serif-tamil/wght.css';
+@import '@fontsource-variable/noto-sans-thai/wght.css';
+@import '@fontsource-variable/noto-serif-thai/wght.css';
+
+/* Manual: families not available on Fontsource */
+@font-face {
+  font-family: 'Komika Axis';
+  src: url('./fonts/komika-axis.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

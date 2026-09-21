@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">caption-magic# Prompts:# App name: caption-magic# Package ID: com.captionmagic.app# Web asset directory: dist (default)</string>
+    <string name="title_activity_main">caption-magic# Prompts:# App name: caption-magic# Package ID: com.captionmagic.app# Web asset directory: dist (default)</string>
+    <string name="package_name">com.captionmagic.app</string>
+    <string name="custom_url_scheme">com.captionmagic.app</string>
+</resources>

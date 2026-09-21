@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "allowImportingTsExtensions": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@tscaps/engine": ["../../packages/engine/src/index.ts"],
+      "@shared/telemetry": ["./shared/telemetry/index.ts"],
+      "@shared/transcription-languages": ["./shared/transcription-languages/index.ts"],
+      "@shared/browser": ["./shared/browser/index.ts"],
+      "@modules/*": ["../../packages/engine/src/modules/*"],
+      "@bootstrap/*": ["./src/bootstrap/*"],
+      "@core/*": ["./src/core/*"],
+      "@presentation/*": ["./src/presentation/*"],
+      "@ui/*": ["./src/ui/*"],
+      "@styles/*": ["./src/styles/*"]
+    }
+  },
+  "include": ["src", "scripts", "../../packages/engine/src/types"]
+}
