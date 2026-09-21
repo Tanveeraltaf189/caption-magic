@@ -1,131 +1,45 @@
-import React, { useState, useEffect } from 'react';
-
-export interface OfflineModel {
-  id: string;
-  name: string;
-  size: number; // bytes
-  language: string;
-  version: string;
-  downloadUrl: string;
-  isDownloaded: boolean;
-  downloadProgress: number;
-}
-
-const AVAILABLE_MODELS: OfflineModel[] = [
-  {
-    id: 'whisper-tiny-en',
-    name: 'Whisper Tiny (English)',
-    size: 139 * 1024 * 1024, // 139MB
-    language: 'en',
-    version: '1.0',
-    downloadUrl: 'https://huggingface.co/openai/whisper-tiny/resolve/main/model.bin',
-    isDownloaded: false,
-    downloadProgress: 0,
-  },
-  {
-    id: 'whisper-base-en',
-    name: 'Whisper Base (English)',
-    size: 265 * 1024 * 1024, // 265MB
-    language: 'en',
-    version: '1.0',
-    downloadUrl: 'https://huggingface.co/openai/whisper-base/resolve/main/model.bin',
-    isDownloaded: false,
-    downloadProgress: 0,
-  },
-  {
-    id: 'whisper-small-multilang',
-    name: 'Whisper Small (Multilingual)',
-    size: 488 * 1024 * 1024, // 488MB
-    language: 'multi',
-    version: '1.0',
-    downloadUrl: 'https://huggingface.co/openai/whisper-small/resolve/main/model.bin',
-    isDownloaded: false,
-    downloadProgress: 0,
-  },
-  {
-    id: 'silero-hindi',
-    name: 'Silero STT (Hindi)',
-    size: 45 * 1024 * 1024, // 45MB
-    language: 'hi',
-    version: '1.0',
-    downloadUrl: 'https://models.silero.ai/models/tts_models/multilang_v2/hi_IN/v3_1_hi.pt',
-    isDownloaded: false,
-    downloadProgress: 0,
-  },
-  {
-    id: 'silero-urdu',
-    name: 'Silero STT (Urdu)',
-    size: 45 * 1024 * 1024, // 45MB
-    language: 'ur',
-    version: '1.0',
-    downloadUrl: 'https://models.silero.ai/models/tts_models/multilang_v2/ur_PK/v3_1_ur.pt',
-    isDownloaded: false,
-    downloadProgress: 0,
-  },
-];
+import React, { useState } from 'react';
 
 export const OfflineModelDownloader: React.FC = () => {
-  const [models, setModels] = useState<OfflineModel[]>(AVAILABLE_MODELS);
   const [downloading, setDownloading] = useState<Set<string>>(new Set());
-  const [totalSize, setTotalSize] = useState(0);
 
-  useEffect(() => {
-    // Check which models are already downloaded
-    loadDownloadedModels();
-    calculateTotalSize();
-  }, []);
+  const models = [
+    { id: 'whisper-tiny', name: 'Whisper Tiny', size: '139MB', language: 'en' },
+    { id: 'whisper-base', name: 'Whisper Base', size: '265MB', language: 'en' },
+    { id: 'silero-hindi', name: 'Silero Hindi', size: '45MB', language: 'hi' },
+    { id: 'silero-urdu', name: 'Silero Urdu', size: '45MB', language: 'ur' },
+  ];
 
-  const loadDownloadedModels = () => {
-    const stored = localStorage.getItem('downloaded-models');
-    if (stored) {
-      const downloadedIds = JSON.parse(stored);
-      setModels((prev) =>
-        prev.map((model) => ({
-          ...model,
-          isDownloaded: downloadedIds.includes(model.id),
-        }))
-      );
-    }
+  const downloadModel = async (modelId: string) => {
+    setDownloading((prev) => new Set(prev).add(modelId));
+    // Simulated download
+    setTimeout(() => {
+      setDownloading((prev) => {
+        const next = new Set(prev);
+        next.delete(modelId);
+        return next;
+      });
+    }, 2000);
   };
 
-  const calculateTotalSize = () => {
-    const total = models.reduce((sum, model) => sum + model.size, 0);
-    setTotalSize(total);
-  };
-
-  const downloadModel = async (model: OfflineModel) => {
-    setDownloading((prev) => new Set(prev).add(model.id));
-
-    try {
-      const response = await fetch(model.downloadUrl);
-      
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const contentLength = parseInt(response.headers.get('content-length') || '0', 10);
-      let downloadedBytes = 0;
-
-      const reader = response.body?.getReader();
-      if (!reader) throw new Error('Cannot read response body');
-
-      const chunks: Uint8Array[] = [];
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        chunks.push(value);
-        downloadedBytes += value.length;
-
-        const progress = Math.round((downloadedBytes / contentLength) * 100);
-        setModels((prev) =>
-          prev.map((m) =>
-            m.id === model.id ? { ...m, downloadProgress: progress } : m
-          )
-        );
-      }
-
-      // Combine chunks and store in IndexedDB
-      const blob = new Blob(chunks);
-      await saveModelToIndexedDB(model.id, blob);
-
-      // Mark as down
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>📥 Offline Models</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '15px' }}>
+        {models.map((model) => (
+          <div key={model.id} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '15px' }}>
+            <h3>{model.name}</h3>
+            <p>Size: {model.size} | Language: {model.language}</p>
+            <button
+              onClick={() => downloadModel(model.id)}
+              disabled={downloading.has(model.id)}
+              style={{ width: '100%', padding: '8px' }}
+            >
+              {downloading.has(model.id) ? 'Downloading...' : 'Download'}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
