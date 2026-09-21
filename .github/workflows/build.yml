@@ -32,13 +32,3 @@ jobs:
       with:
         name: caption-magic-web-build
         path: apps/studio/dist/
-
-    - name: Create release
-      if: success()
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: build-${{ github.run_number }}
-        release_name: Caption Magic Build ${{ github.run_number }}
-        body: Web build successful. Download artifacts to use with Capacitor.
