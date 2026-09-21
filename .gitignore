@@ -21,3 +21,4 @@ templates/*/controls.build.json
 templates/*/animations.build.json
 templates/_lib/animation/presets.build.json
 
+caption-magic-apk-build/
